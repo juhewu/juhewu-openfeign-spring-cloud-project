@@ -32,18 +32,22 @@ public class FeignRequestInterceptor implements RequestInterceptor {
     public void apply(RequestTemplate requestTemplate) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder
                 .getRequestAttributes();
-        if (attributes != null) {
-            HttpServletRequest request = attributes.getRequest();
-            Enumeration<String> headerNames = request.getHeaderNames();
-
-            // 传递 token
-            passToken(requestTemplate, request);
-
-            if (headerNames != null) {
-                // 请求头中的 key 继续传递
-                headerPassKeys(requestTemplate, request);
-            }
+        // 获取不到 request，直接返回
+        if (attributes == null) {
+            return;
         }
+        HttpServletRequest request = attributes.getRequest();
+        Enumeration<String> headerNames = request.getHeaderNames();
+
+        // 传递 token
+        passToken(requestTemplate, request);
+
+        // 请求头中没有任何参数，不需要传递
+        if (headerNames == null) {
+            return;
+        }
+        // 传递请求头中的参数
+        headerPassKeys(requestTemplate, request);
     }
 
     /**
