@@ -68,7 +68,7 @@ public class FeignRequestInterceptor implements RequestInterceptor {
 
         // 传递 token，如果请求头中有 token，用 requestTemplate 传递
         final String header = request.getHeader(REQUEST_HEADER_AUTHORIZATION);
-        if (header.startsWith(TOKEN_SPLIT)) {
+        if (null != header && header.startsWith(TOKEN_SPLIT)) {
             requestTemplate.header(REQUEST_HEADER_AUTHORIZATION, header);
             return;
         }
@@ -77,7 +77,7 @@ public class FeignRequestInterceptor implements RequestInterceptor {
         String urlTokenName = tokenSetting.getUrlTokenName();
         final String token = request.getParameter(urlTokenName);
         if (token != null) {
-            requestTemplate.header(REQUEST_HEADER_AUTHORIZATION, String.format("%s %s", TOKEN_SPLIT, token));
+            requestTemplate.header(REQUEST_HEADER_AUTHORIZATION, String.format("%s%s", TOKEN_SPLIT, token));
         }
     }
 
