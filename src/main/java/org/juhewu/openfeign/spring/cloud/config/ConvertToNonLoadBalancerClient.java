@@ -75,7 +75,7 @@ public class ConvertToNonLoadBalancerClient implements Client {
         newUrl += path;
 
         // 参数传递
-        if (null != asUri.getQuery()) {
+        if (null != asUri.getRawQuery()) {
             // fix：url 有中文出现 http status 400 的 bug
             newUrl += "?" + asUri.getRawQuery();
         }
