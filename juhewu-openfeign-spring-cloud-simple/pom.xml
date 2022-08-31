@@ -19,6 +19,8 @@
         <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
         <!--spring-cloud-alibaba-->
         <spring-cloud-alibaba.version>2.2.3.RELEASE</spring-cloud-alibaba.version>
+        <!--不部署此模块-->
+        <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
 
     <modules>
