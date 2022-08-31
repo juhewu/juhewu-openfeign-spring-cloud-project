@@ -5,17 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.juhewu</groupId>
-    <artifactId>juhewu-openfeign-spring-cloud-starter</artifactId>
+    <artifactId>juhewu-openfeign-spring-cloud-project</artifactId>
     <version>${revision}</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>Juhewu OpenFeign Spring cloud Project</name>
     <description>OpenFeign 功能扩展</description>
-    <url>https://github.com/juhewu/juhewu-openfeign-spring-cloud-starter</url>
+    <url>https://github.com/juhewu/juhewu-openfeign-spring-cloud-project</url>
 
     <properties>
         <!--项目版本号-->
-        <revision>1.0.3</revision>
+        <revision>1.0.4</revision>
         <!--设置编码-->
         <encoding>utf-8</encoding>
         <!--jdk 版本号-->
@@ -30,50 +30,6 @@
         <feign-core.version>11.9.1</feign-core.version>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-autoconfigure</artifactId>
-            <scope>provided</scope>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <scope>provided</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-openfeign-core</artifactId>
-            <version>${spring-cloud-openfeign-core.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.github.openfeign</groupId>
-            <artifactId>feign-core</artifactId>
-            <version>${feign-core.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-context</artifactId>
-            <version>${spring-cloud-context.version}</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -87,6 +43,8 @@
     </dependencyManagement>
     <!--子模块-->
     <modules>
+        <module>juhewu-openfeign-spring-cloud-simple</module>
+        <module>juhewu-openfeign-spring-cloud-starter</module>
     </modules>
 
     <organization>
@@ -95,15 +53,15 @@
     </organization>
 
     <scm>
-        <url>https://github.com/juhewu/juhewu-openfeign-spring-cloud-starter</url>
-        <connection>scm:git:git:////github.com/juhewu/juhewu-openfeign-spring-cloud-starter.git</connection>
-        <developerConnection>scm:git:ssh://git@//github.com/juhewu/juhewu-openfeign-spring-cloud-starter.git
+        <url>https://github.com/juhewu/juhewu-openfeign-spring-cloud-project</url>
+        <connection>scm:git:git:////github.com/juhewu/juhewu-openfeign-spring-cloud-project.git</connection>
+        <developerConnection>scm:git:ssh://git@//github.com/juhewu/juhewu-openfeign-spring-cloud-project.git
         </developerConnection>
     </scm>
 
     <issueManagement>
         <system>Github</system>
-        <url>https://github.com/juhewu/juhewu-openfeign-spring-cloud-starter/issues</url>
+        <url>https://github.com/juhewu/juhewu-openfeign-spring-cloud-project/issues</url>
     </issueManagement>
 
     <mailingLists>

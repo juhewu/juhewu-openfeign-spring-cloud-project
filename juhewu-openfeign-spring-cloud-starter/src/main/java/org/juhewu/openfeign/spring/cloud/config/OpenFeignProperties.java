@@ -21,11 +21,11 @@ public class OpenFeignProperties {
      */
     private NonLoadBalancer nonLoadBalancer;
 
-    private Token token;
+    private PassToken passToken;
     /**
      * 请求头
      */
-    private Header header;
+    private PassHeader passHeader;
 
     /**
      * 非负载均衡
@@ -62,12 +62,12 @@ public class OpenFeignProperties {
      * Token
      */
     @Data
-    public static class Token {
+    public static class PassToken {
 
         /**
          * Token 是否传递
          */
-        private boolean enable = true;
+        private boolean enable;
         /**
          * URL 中 Token 的名字
          */
@@ -77,11 +77,15 @@ public class OpenFeignProperties {
      * 请求头
      */
     @Data
-    public static class Header {
+    public static class PassHeader {
+        /**
+         * Header 是否传递
+         */
+        private boolean enable;
 
         /**
          * 请求头中需要传递的 keys
          */
-        private List<String> passKeys;
+        private List<String> keys;
     }
 }

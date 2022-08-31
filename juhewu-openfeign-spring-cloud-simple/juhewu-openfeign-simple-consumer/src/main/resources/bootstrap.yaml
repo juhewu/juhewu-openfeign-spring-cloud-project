@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: consumer
+  cloud:
+    # nacos
+    nacos:
+      # 注册中心
+      discovery:
+        # 注册中心地址
+        server-addr: localhost:8848
+
+juhewu:
+  openfeign:
+    # openfeign 转换成非负载均衡
+    non-load-balancer:
+      # 是否启用，默认 false，不启用
+      enable: true
+      # 非负载均衡的 url，可以写成网关地址/nginx地址/服务的地址
+      url: localhost:8081
+      # 是否跳过前缀，默认 false，不跳过。
+      # true 时，会拼接成 http://{url}/{path}
+      # false 或不写时，会拼接成 http://{url}/{service-id}/{path}
+      skip-prefix: true
+    # openfeign 传递请求头
+    pass-header:
+      # 是否启用，默认 false，不启用
+      enable: true
+      # 请求头中需要传递的 keys
+      keys:
+        - Test1
+        - Test2
+    # openfeign 传递 token
+    pass-token:
+      # 是否传递 token，默认是 false，不启用。说明：请求头（Authorization）或 url 中的 access_token 传递到下个服务
+      enable: true
+      # url 参数中 token 的名称，默认是 access_token
+      url-token-name: access_token
+# 日志
+logging:
+  level:
+    org.juhewu.openfeign.spring.cloud: debug

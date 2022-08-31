@@ -3,11 +3,11 @@ package org.juhewu.openfeign.spring.cloud.interceptor;
 import static org.juhewu.openfeign.spring.cloud.constant.FeignConstant.REQUEST_HEADER_AUTHORIZATION;
 import static org.juhewu.openfeign.spring.cloud.constant.FeignConstant.TOKEN_SPLIT;
 
-import java.util.Enumeration;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.juhewu.openfeign.spring.cloud.config.OpenFeignProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -20,11 +20,12 @@ import feign.RequestTemplate;
  * @author duanjw
  * @since 2019-11-06
  **/
-public class FeignRequestInterceptor implements RequestInterceptor {
+public class FeignRequestTokenInterceptor implements RequestInterceptor {
 
+    private final static Logger log = LoggerFactory.getLogger(FeignRequestTokenInterceptor.class);
     private final OpenFeignProperties openFeignProperties;
 
-    public FeignRequestInterceptor(OpenFeignProperties openFeignProperties) {
+    public FeignRequestTokenInterceptor(OpenFeignProperties openFeignProperties) {
         this.openFeignProperties = openFeignProperties;
     }
 
@@ -37,17 +38,9 @@ public class FeignRequestInterceptor implements RequestInterceptor {
             return;
         }
         HttpServletRequest request = attributes.getRequest();
-        Enumeration<String> headerNames = request.getHeaderNames();
 
         // 传递 token
         passToken(requestTemplate, request);
-
-        // 请求头中没有任何参数，不需要传递
-        if (headerNames == null) {
-            return;
-        }
-        // 传递请求头中的参数
-        headerPassKeys(requestTemplate, request);
     }
 
     /**
@@ -60,9 +53,9 @@ public class FeignRequestInterceptor implements RequestInterceptor {
      * @param request request
      */
     private void passToken(RequestTemplate requestTemplate, HttpServletRequest request) {
-        OpenFeignProperties.Token tokenSetting = openFeignProperties.getToken();
+        OpenFeignProperties.PassToken passTokenSetting = openFeignProperties.getPassToken();
         // 不传递 token
-        if (!tokenSetting.isEnable()) {
+        if (null == passTokenSetting || !passTokenSetting.isEnable()) {
             return;
         }
 
@@ -70,29 +63,25 @@ public class FeignRequestInterceptor implements RequestInterceptor {
         final String header = request.getHeader(REQUEST_HEADER_AUTHORIZATION);
         if (null != header && header.startsWith(TOKEN_SPLIT)) {
             requestTemplate.header(REQUEST_HEADER_AUTHORIZATION, header);
+            if (log.isDebugEnabled()) {
+                log.debug("openfeign 传递 header 中 key 为 {} 的值作为 token", REQUEST_HEADER_AUTHORIZATION);
+            }
             return;
         }
 
         // 传递 token，如果请求头没有 token，从 url 取出 token
-        String urlTokenName = tokenSetting.getUrlTokenName();
+        String urlTokenName = passTokenSetting.getUrlTokenName();
         final String token = request.getParameter(urlTokenName);
         if (token != null) {
-            requestTemplate.header(REQUEST_HEADER_AUTHORIZATION, String.format("%s%s", TOKEN_SPLIT, token));
-        }
-    }
-
-    /**
-     * 请求头中的 key 继续传递
-     *
-     * @param requestTemplate requestTemplate
-     * @param request request
-     */
-    private void headerPassKeys(RequestTemplate requestTemplate, HttpServletRequest request) {
-        for (String passHeadersKey : openFeignProperties.getHeader().getPassKeys()) {
-            String header = request.getHeader(passHeadersKey);
-            if (null != header) {
-                requestTemplate.header(passHeadersKey, header);
+            if (log.isDebugEnabled()) {
+                log.debug("openfeign 传递 url 中 key 为 {} 的值作为 token", urlTokenName);
             }
+            requestTemplate.header(REQUEST_HEADER_AUTHORIZATION, String.format("%s%s", TOKEN_SPLIT, token));
+            return;
+        }
+
+        if (log.isWarnEnabled()) {
+            log.warn("openfeign 不传递 token。在请求头和 url 都没有获取到 token，");
         }
     }
 }

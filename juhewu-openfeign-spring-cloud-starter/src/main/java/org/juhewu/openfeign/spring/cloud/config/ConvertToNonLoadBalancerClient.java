@@ -6,6 +6,9 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import feign.Client;
 import feign.Request;
 import feign.Response;
@@ -17,20 +20,20 @@ import feign.Response;
  */
 public class ConvertToNonLoadBalancerClient implements Client {
 
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
     private final Client delegate;
     private final String url;
     private final boolean skipPrefix;
 
     ConvertToNonLoadBalancerClient(Client delegate, String url, boolean skipPrefix) {
         this.delegate = delegate;
-
         this.url = url;
         this.skipPrefix = skipPrefix;
     }
 
     @Override
     public Response execute(Request request, Request.Options options) throws IOException {
-
         Request modifiedRequest = getModifyRequest(request);
         return this.delegate.execute(modifiedRequest, options);
     }
@@ -78,6 +81,10 @@ public class ConvertToNonLoadBalancerClient implements Client {
         if (null != asUri.getRawQuery()) {
             // fix：url 有中文出现 http status 400 的 bug
             newUrl += "?" + asUri.getRawQuery();
+        }
+
+        if(log.isDebugEnabled()) {
+            log.debug("openfeign 转换为非负载均衡请求，原请求地址：{}，新请求地址：{}", asUri, newUrl);
         }
 
         request = Request.create(request.httpMethod(), newUrl, headers, request.body(), request.charset(), request.requestTemplate());
