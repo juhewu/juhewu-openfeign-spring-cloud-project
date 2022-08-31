@@ -11,12 +11,4 @@
 
     <artifactId>juhewu-openfeign-simple-provider</artifactId>
 
-    <dependencies>
-        <!--openfeign-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
-    </dependencies>
-
 </project>

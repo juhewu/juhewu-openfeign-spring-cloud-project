@@ -15,11 +15,7 @@
         <dependency>
             <groupId>org.juhewu</groupId>
             <artifactId>juhewu-openfeign-spring-cloud-starter</artifactId>
-        </dependency>
-        <!--openfeign-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>${revision}</version>
         </dependency>
     </dependencies>
 
