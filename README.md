@@ -22,23 +22,27 @@
 ```yaml
 juhewu:
   openfeign:
-    # 转换成非负载均衡
+    # openfeign 转换成非负载均衡
     non-load-balancer:
       # 是否启用，默认 false，不启用
       enable: true
-      # 非负载均衡的 url
+      # 非负载均衡的 url，可以写成网关地址/nginx地址/服务的地址
       url: localhost:9999
       # 是否跳过前缀，默认 false，不跳过。
       # true 时，会拼接成 http://{url}/{path}
       # false 或不写时，会拼接成 http://{url}/{service-id}/{path}
       skip-prefix: false
-    header:
+    # openfeign 传递请求头
+    pass-header:
+      # 是否启用，默认 false，不启用
+      enable: true
       # 请求头中需要传递的 keys
-      pass-keys: 
-        - test1
-        - test2
-    token:
-      # 是否传递 token，默认是 true。说明：请求头（Authorization）或 url 中的 access_token 传递到下个服务
+      keys:
+        - Test1
+        - Test2
+    # openfeign 传递 token
+    pass-token:
+      # 是否传递 token，默认是 false，不启用。说明：请求头（Authorization）或 url 中的 access_token 传递到下个服务
       enable: true
       # url 参数中 token 的名称，默认是 access_token
       url-token-name: access_token
@@ -78,25 +82,29 @@ juhewu:
 ```yaml
 juhewu:
   openfeign:
-    token:
-      # 是否传递 token，默认是 true。说明：请求头（Authorization）或 url 中的 access_token 传递到下个服务
+    # openfeign 传递 token
+    pass-token:
+      # 是否传递 token，默认是 false，不启用。说明：请求头（Authorization）或 url 中的 access_token 传递到下个服务
       enable: true
-      # url 参数中 token 的名称，默认是 access_token，或者可以换成你实际的值，如：token
+      # url 参数中 token 的名称，默认是 access_token
       url-token-name: access_token
 ```
 
 ### 服务间调用传递请求头中某些 key
 
-使用场景：服务间用 OpenFeign 调用默认不会传递请求头中的参数，但是当我们需要统一传递一些请求头中的参数时，如：我需要服务间调用传递 test1 和 test2，则可以这么配置：
+使用场景：服务间用 OpenFeign 调用默认不会传递请求头中的参数，但是当我们需要统一传递一些请求头中的参数时，如：我需要服务间调用传递 Test1 和 Test2，则可以这么配置：
 
 ```yaml
 juhewu:
   openfeign:
-    header:
+    # openfeign 传递请求头
+    pass-header:
+      # 是否启用，默认 false，不启用
+      enable: true
       # 请求头中需要传递的 keys
-      pass-keys:
-        - test1
-        - test2
+      keys:
+        - Test1
+        - Test2
 ```
 
 
